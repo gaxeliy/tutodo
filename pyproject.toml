@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "tutodo"
+version = "0.1.0"
+description = ""
+authors = ["gaxeliy <gaxeliy@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.101.0"}
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.20"}
+alembic = "^1.11.3"
+asyncpg = "^0.28.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+max-line-length = 120
