@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from app.helpers import ModelConfig
+from app.helpers import ModelConfig, HasHeader
 
 
 class TagSchema(BaseModel, ModelConfig):
@@ -13,7 +13,7 @@ class TagSchema(BaseModel, ModelConfig):
 
 
 class TaskSchema(BaseModel, ModelConfig):
-    id: Optional[int]
+    id: Optional[int] = None
     title: str
     description: str
     done: bool
@@ -22,6 +22,10 @@ class TaskSchema(BaseModel, ModelConfig):
     my_day_date: Optional[datetime.date]
     project_id: Optional[int] = None
     tags: list[TagSchema] = []
+
+
+class TaskSchemaListResponse(BaseModel, HasHeader):
+    tasks: list[TaskSchema]
 
 
 class TagResponse(BaseModel):
@@ -38,10 +42,12 @@ class TaskCreateRequest(BaseModel):
     scheduled_at: Optional[datetime.datetime]
     my_day_date: Optional[datetime.date]
 
+
 class ProjectSchema(BaseModel, ModelConfig):
-    id: Optional[int]
+    id: Optional[int] = None
     title: str
     description: str
+
 
 class ProjectCreateRequest(BaseModel):
     title: str

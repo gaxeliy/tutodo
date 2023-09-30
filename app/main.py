@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from starlette.responses import HTMLResponse
 
 from app import users, tasks
 from app.config import DEBUG, WORKERS_COUNT
@@ -12,9 +13,10 @@ app.include_router(tasks.router.router)
 app.include_router(users.router.router)
 
 
-@app.get('/', response_class=get_response_class('index.html'))
-async def index() -> dict:
-    return {}
+@app.get('/', response_class=HTMLResponse)
+async def index():
+    with open('templates/index.html', 'r') as f:
+        return f.read()
 
 
 if __name__ == '__main__':

@@ -3,12 +3,13 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import sessionmaker
+from starlette.requests import Request
 from starlette.responses import HTMLResponse
 
 from app.helpers import get_response_class
 from app.tasks.models import Tag
 from app.tasks.serializers import TaskCreateRequest, TaskSchema, ProjectSchema, ProjectCreateRequest, \
-    ProjectByIdResponse, TagSchema, TagResponse
+    ProjectByIdResponse, TagSchema, TagResponse, TaskSchemaListResponse
 from app.tasks.use_cases import Repository
 from app.dependencies import get_repository
 
@@ -18,9 +19,9 @@ router = APIRouter(
 
 
 @router.get('/', response_class=get_response_class('task_list.html'))
-async def get_tasks(rep: Annotated[Repository, Depends(get_repository)]) -> list[TaskSchema]:
+async def get_tasks(request: Request, rep: Annotated[Repository, Depends(get_repository)]) -> TaskSchemaListResponse:
     all_tasks = await rep.get_tasks()
-    return all_tasks
+    return TaskSchemaListResponse(tasks=all_tasks, headers=request.headers)
 
 
 @router.post('/')
