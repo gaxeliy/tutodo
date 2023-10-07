@@ -1,18 +1,37 @@
 import json
-from typing import Any
+from functools import wraps
+from typing import Any, TypeVar, Generic, Mapping
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, BaseModel
+from starlette.requests import Request
 from starlette.responses import Response
 
 from app.config import templates
+
+
+T = TypeVar('T')
+
+
+class ResponseWithHeaders(BaseModel, Generic[T]):
+    data: T
+    headers: Mapping[str, str]
 
 
 class ModelConfig:
     model_config = ConfigDict(from_attributes=True)
 
 
-class HasHeader:
-    headers: dict[str, str]
+def pass_headers(func):
+    """
+    Добавляет заголовки в Response для использования в renderer-ах
+    """
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        data = await func(*args, **kwargs)
+        headers = kwargs['request'].headers
+        return ResponseWithHeaders(data=data, headers=headers)
+
+    return wrapper
 
 
 def get_response_class(template_name: str) -> type[Response]:

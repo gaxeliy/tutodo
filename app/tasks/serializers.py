@@ -1,9 +1,9 @@
 import datetime
-from typing import Optional
+from typing import Optional, Any
 
 from pydantic import BaseModel, Field
 
-from app.helpers import ModelConfig, HasHeader
+from app.helpers import ModelConfig
 
 
 class TagSchema(BaseModel, ModelConfig):
@@ -22,10 +22,6 @@ class TaskSchema(BaseModel, ModelConfig):
     my_day_date: Optional[datetime.date]
     project_id: Optional[int] = None
     tags: list[TagSchema] = []
-
-
-class TaskSchemaListResponse(BaseModel, HasHeader):
-    tasks: list[TaskSchema]
 
 
 class TagResponse(BaseModel):
