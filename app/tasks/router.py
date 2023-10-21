@@ -68,7 +68,8 @@ async def delete_task(request: Request, id_: int, rep: Annotated[Repository, Dep
     await rep.delete_task(id_)
 
 
-@router.get('/projects/', response_model=ResponseWithHeaders[list[ProjectSchema]])
+@router.get('/projects/', response_model=ResponseWithHeaders[list[ProjectSchema]],
+            response_class=get_response_class('project_list.html'))
 @pass_headers
 async def get_projects(request: Request, rep: Annotated[Repository, Depends(get_repository)]) -> list[ProjectSchema]:
     all_projects = await rep.get_projects()
@@ -83,6 +84,17 @@ async def get_project(request: Request,
     project = await rep.get_project(id_)
     tasks = await rep.get_tasks_by_project_id(id_)
     return ProjectByIdResponse(**project.__dict__, tasks=tasks)
+
+
+@router.get('/tasks-by-project/{id_}',
+            response_model=ResponseWithHeaders[list[TaskSchema]],
+            response_class=get_response_class('task_list.html'))
+@pass_headers
+async def get_tasks_by_project(request: Request,
+                               id_: int,
+                               rep: Annotated[Repository, Depends(get_repository)]) -> list[TaskSchema]:
+    tasks = await rep.get_tasks_by_project_id(id_)
+    return tasks
 
 
 @router.post('/projects', response_model=ResponseWithHeaders[ProjectSchema])

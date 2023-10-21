@@ -1,3 +1,11 @@
-{% for task in content['tasks'] %}
+{% if full_page %}
+{% extends "base.html" %}
+{% endif %}
+{% block content %}
+<div id="task_list">
+    {% for task in content['data'] %}
     <li>{{ task.title }}</li>
-{% endfor %}
+    {% endfor %}
+</div>
+
+{% endblock %}

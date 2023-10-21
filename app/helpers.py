@@ -47,15 +47,23 @@ def get_response_class(template_name: str) -> type[Response]:
                 del content['headers']
             if 'hx-request' in headers:
                 self.media_type = 'text/html'
-                return templates.TemplateResponse(template_name, {'request': None, 'content': content}).body
-            else:
+                htmx_body = templates.TemplateResponse(template_name, {'request': None, 'content': content}).body
+                return htmx_body
+            elif 'application/json' in headers.get('accept'):
                 self.media_type = 'application/json'
-                return json.dumps(
+                json_body = json.dumps(
                     content,
                     ensure_ascii=False,
                     allow_nan=False,
                     indent=None,
                     separators=(",", ":"),
                 ).encode("utf-8")
+                return json_body
+            else:
+                self.media_type = 'text/html'
+                html_body = templates.TemplateResponse(template_name,
+                                                       {'request': None, 'content': content, 'full_page': True}).body
+                return html_body
+            pass
 
     return HTMXOrJSONResponse

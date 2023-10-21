@@ -1,0 +1,8 @@
+{% if full_page %}
+{% extends "base.html" %}
+{% endif %}
+{% block content %}
+{% for project in content['data'] %}
+    <li><div hx-get="/tasks/tasks-by-project/{{project.id}}" hx-push-url="true" hx-target="#task_list">{{ project.title }}</div></li>
+{% endfor %}
+{% endblock %}
