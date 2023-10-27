@@ -56,8 +56,8 @@ def get_response_class(template_name: str) -> type[Response]:
                     ensure_ascii=False,
                     allow_nan=False,
                     indent=None,
-                    separators=(",", ":"),
-                ).encode("utf-8")
+                    separators=(',', ':'),
+                ).encode('utf-8')
                 return json_body
             else:
                 self.media_type = 'text/html'

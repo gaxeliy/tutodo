@@ -19,7 +19,7 @@ from app.tasks.use_cases import Repository
 def rep_():
     postgres = PostgresContainer('postgres:14.9-alpine3.18')
     with postgres:
-        postgres.driver = "asyncpg"
+        postgres.driver = 'asyncpg'
         connection_url = postgres.get_connection_url()
         engine = create_async_engine(connection_url, echo=True, future=True, poolclass=NullPool)
         async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)  # type: ignore
