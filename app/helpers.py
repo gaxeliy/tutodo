@@ -64,6 +64,5 @@ def get_response_class(template_name: str) -> type[Response]:
                 html_body = templates.TemplateResponse(template_name,
                                                        {'request': None, 'content': content, 'full_page': True}).body
                 return html_body
-            pass
 
     return HTMXOrJSONResponse

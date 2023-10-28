@@ -24,17 +24,20 @@ class Project(Base):
     title = Column(String, nullable=False)
     description = Column(String)
 
+
 class TaskTag(Base):
     __tablename__ = 'task_tags'
     id = Column(Integer, autoincrement=True, primary_key=True)
     task_id = Column(Integer, ForeignKey('tasks.id', ondelete='CASCADE'))
     tag_id = Column(Integer, ForeignKey('tags.id', ondelete='CASCADE'))
 
+
 class Tag(Base):
     __tablename__ = 'tags'
     id = Column(Integer, autoincrement=True, primary_key=True)
     title = Column(String, nullable=False)
     description = Column(String)
+
 
 class Reminder(Base):
     __tablename__ = 'reminders'
