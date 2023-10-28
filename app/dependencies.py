@@ -12,5 +12,3 @@ def get_repository():
     from app.tasks.use_cases import Repository
 
     return Repository(async_session)
-
-
